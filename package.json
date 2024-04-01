@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Kimberlynn01/api_tugas_akhir#readme",
   "dependencies": {
     "express": "^4.19.2",
+    "firebase": "^10.10.0",
     "firebase-admin": "^12.0.0"
   },
   "keywords": []

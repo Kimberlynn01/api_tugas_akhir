@@ -15,10 +15,10 @@ admin.initializeApp({
 const Middleware = (req, res, next) => {
   const { auth } = req.query;
 
-  if (auth === "ZztUpgXyzrj8") {
+  if (auth === "123") {
     next();
   } else {
-    res.status(403).json({ error: "Access Denie" });
+    res.status(403).json({ error: "Access Denied" });
   }
 };
 
