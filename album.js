@@ -72,7 +72,7 @@ app.get("/sort", async (req, res) => {
       return res.status(400).json({ error: "AlbumId is required!" });
     }
 
-    const albumRef = admin.database().ref("album");
+    const albumRef = admin.database().ref("foto");
     const snapshot = await albumRef.once("value");
     const albumList = snapshot.val();
 
