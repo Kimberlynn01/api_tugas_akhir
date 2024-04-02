@@ -7,6 +7,6 @@ const albumRoute = require("./album");
 router.use("/user", userRoute);
 
 // router for album
-router.user("/album", albumRoute);
+router.use("/album", albumRoute);
 
 module.exports = router;
