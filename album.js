@@ -66,29 +66,29 @@ app.get("/", async (req, res) => {
 
 app.get("/sort", async (req, res) => {
   try {
-    const { albumId } = req.query;
+    const albumId = req.query.albumId;
 
     if (!albumId) {
-      return res.status(400).json({ error: "Parameter albumId tidak ditemukan" });
+      return res.status(400).json({ error: "AlbumId is required!" });
     }
 
-    const albumRef = admin.database().ref("foto");
-    const snapshot = await albumRef.orderByChild("album/id").equalTo(parseInt(albumId)).once("value");
+    const albumRef = admin.database().ref("album");
+    const snapshot = await albumRef.once("value");
     const albumList = snapshot.val();
 
-    if (!albumList) {
-      return res.status(404).json({ error: "Photo tidak ditemukan" });
-    }
+    const filteredAlbums = Object.keys(albumList || {}).reduce((acc, key) => {
+      if (albumList[key].albumId === parseInt(albumId)) {
+        acc.push({
+          fotoId: key,
+          ...albumList[key],
+        });
+      }
+      return acc;
+    }, []);
 
-    const albumArray = Object.keys(albumList).map((key) => ({
-      id: key,
-      ...albumList[key],
-    }));
-
-    res.status(200).json(albumArray);
+    res.status(200).json(filteredAlbums);
   } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ error: "Terjadi kesalahan saat mengambil data produk" });
+    res.status(500).json({ error: "Terjadi kesalahan saat memuat data album" });
   }
 });
 
