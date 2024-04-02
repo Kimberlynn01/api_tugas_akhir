@@ -51,10 +51,11 @@ app.get("/", async (req, res) => {
   try {
     const fotoRef = admin.database().ref("foto");
     const snapshot = await fotoRef.once("value");
+
     const fotoList = snapshot.val();
 
     const fotoArray = Object.keys(fotoList || {}).map((key) => ({
-      albumId: key,
+      fotoId: key,
       ...fotoList[key],
     }));
 
