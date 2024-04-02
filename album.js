@@ -64,4 +64,32 @@ app.get("/", async (req, res) => {
   }
 });
 
+app.get("/sort", async (req, res) => {
+  try {
+    const { albumId } = req.query;
+
+    if (!albumId) {
+      return res.status(400).json({ error: "Parameter albumId tidak ditemukan" });
+    }
+
+    const albumRef = admin.database().ref("photo");
+    const snapshot = await albumRef.orderByChild("album/id").equalTo(parseInt(albumId)).once("value");
+    const albumList = snapshot.val();
+
+    if (!albumList) {
+      return res.status(404).json({ error: "Photo tidak ditemukan" });
+    }
+
+    const albumArray = Object.keys(albumList).map((key) => ({
+      id: key,
+      ...albumList[key],
+    }));
+
+    res.status(200).json(albumArray);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Terjadi kesalahan saat mengambil data produk" });
+  }
+});
+
 module.exports = app;
