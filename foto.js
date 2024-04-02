@@ -1,0 +1,72 @@
+const express = require("express");
+const app = express();
+const admin = require("firebase-admin");
+
+app.use(express.json());
+
+const serviceAccount = require("./tugas-akhir-sekolah-firebase-adminsdk-pukna-d74a7608ef.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://tugas-akhir-sekolah-default-rtdb.asia-southeast1.firebasedatabase.app/",
+});
+
+app.post("/", async (req, res) => {
+  try {
+    const { judulFoto, deskripsiFoto, lokasiFile, albumId, userId } = res.body;
+
+    if (!judulFoto || !deskripsiFoto || !lokasiFile || albumId || userId) {
+      return res.status(400).send({ error: "data foto tidak lengkap" });
+    }
+
+    const fotoRef = admin.database().ref("photo");
+
+    const snapshot = await fotoRef.once("value");
+    const fotoList = snapshot.val();
+
+    const nextId = Object.keys(fotoList || {}).length + 1;
+    const tanggalUnggah = new Date().toISOString();
+
+    newFotoRef = fotoRef.child(nextId.toString());
+
+    await newFotoRef.set({
+      fotoId: nextId,
+      judulFoto: judulFoto,
+      deskripsiFoto: deskripsiFoto,
+      tanggalUnggah: tanggalUnggah,
+      lokasiFile: lokasiFile,
+      albumId: albumId,
+      userId: userId,
+    });
+
+    res.status(201).json({
+      fotoId: nextId,
+      judulFoto: judulFoto,
+      deskripsiFoto: deskripsiFoto,
+      tanggalUnggah: tanggalUnggah,
+      lokasiFile: lokasiFile,
+      albumId: albumId,
+      userId: userId,
+    });
+  } catch (error) {
+    res.status(500).send({ error: "Terjadi kesalahan saat menambahkan data" });
+  }
+});
+
+app.get("/", async (req, res) => {
+  try {
+    const fotoRef = admin.database().ref("photo");
+    const snapshot = fotoRef.once("value");
+
+    const fotoList = snapshot.val();
+
+    const fotoArray = Object.keys(fotoList || {}).map((key) => ({
+      fotoId: key,
+      ...fotoList[key],
+    }));
+
+    res.status(200).json(fotoArray);
+  } catch (error) {}
+});
+
+module.exports = app;
