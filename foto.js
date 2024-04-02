@@ -6,7 +6,7 @@ app.use(express.json());
 
 app.post("/", async (req, res) => {
   try {
-    const { judulFoto, deskripsiFoto, lokasiFile, albumId, userId } = res.body;
+    const { judulFoto, deskripsiFoto, lokasiFile, albumId, userId } = req.body;
 
     if (!judulFoto || !deskripsiFoto || !lokasiFile || albumId || userId) {
       return res.status(400).send({ error: "data foto tidak lengkap" });
@@ -18,6 +18,7 @@ app.post("/", async (req, res) => {
     const fotoList = snapshot.val();
 
     const nextId = Object.keys(fotoList || {}).length + 1;
+
     const tanggalUnggah = new Date().toISOString();
 
     newFotoRef = fotoRef.child(nextId.toString());
@@ -59,7 +60,9 @@ app.get("/", async (req, res) => {
     }));
 
     res.status(200).json(fotoArray);
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({ error: "Terjadi kesalahan saat memuat data foto" });
+  }
 });
 
 module.exports = app;
