@@ -4,13 +4,6 @@ const admin = require("firebase-admin");
 
 app.use(express.json());
 
-const serviceAccount = require("./tugas-akhir-sekolah-firebase-adminsdk-pukna-d74a7608ef.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://tugas-akhir-sekolah-default-rtdb.asia-southeast1.firebasedatabase.app/",
-});
-
 app.post("/", async (req, res) => {
   try {
     const { judulFoto, deskripsiFoto, lokasiFile, albumId, userId } = res.body;
