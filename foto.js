@@ -49,8 +49,9 @@ app.post("/", async (req, res) => {
 
 app.get("/", async (req, res) => {
   try {
-    const fotoRef = admin.database().ref("album");
-    const snapshot = await fotoRef.once("value");
+    const fotoRef = admin.database().ref("photo");
+    const snapshot = fotoRef.once("value");
+
     const fotoList = snapshot.val();
 
     const fotoArray = Object.keys(fotoList || {}).map((key) => ({
