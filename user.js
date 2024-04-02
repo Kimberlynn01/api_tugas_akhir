@@ -9,7 +9,8 @@ app.post("/", async (req, res) => {
     const { username, password, email, namaLengkap, alamat } = req.body;
 
     if (!username || !password || !email || !namaLengkap || !alamat) {
-      return res.status(400).json({ error: "Data user tidak lengkap" });
+      console.log("Data user tidak lengkap:", req.body);
+      return res.status(400).json({ error: "Data user tidak lengkap. Pastikan semua field diisi." });
     }
 
     const userRef = admin.database().ref("users");
