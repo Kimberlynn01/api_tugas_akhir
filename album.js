@@ -72,7 +72,7 @@ app.get("/sort", async (req, res) => {
       return res.status(400).json({ error: "Parameter albumId tidak ditemukan" });
     }
 
-    const albumRef = admin.database().ref("photo");
+    const albumRef = admin.database().ref("foto");
     const snapshot = await albumRef.orderByChild("album/id").equalTo(parseInt(albumId)).once("value");
     const albumList = snapshot.val();
 
