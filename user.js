@@ -6,9 +6,9 @@ app.use(express.json());
 
 app.post("/", async (req, res) => {
   try {
-    const { userId, username, password, email, namaLengkap, alamat } = req.body;
+    const { username, password, email, namaLengkap, alamat } = req.body;
 
-    if (!userId || !username || !password || !email || !namaLengkap || !alamat) {
+    if (!username || !password || !email || !namaLengkap || !alamat) {
       return res.status(400).json({ error: "Data user tidak lengkap" });
     }
 
