@@ -69,10 +69,9 @@ app.get("/", async (req, res) => {
     res.status(500).json({ error: "Terjadi kesalahan saat memuat data album" });
   }
 });
-
-app.get("/sort", async (req, res) => {
+app.get("/:albumId/photos", async (req, res) => {
   try {
-    const albumId = req.query.albumId;
+    const albumId = req.params.albumId;
 
     if (!albumId) {
       return res.status(400).json({ error: "AlbumId is required!" });
@@ -82,8 +81,8 @@ app.get("/sort", async (req, res) => {
     const snapshot = await albumRef.once("value");
     const albumList = snapshot.val();
 
-    const filteredAlbums = Object.keys(albumList || {}).reduce((acc, key) => {
-      if (albumList[key].albumId === parseInt(albumId)) {
+    const filteredPhotos = Object.keys(albumList || {}).reduce((acc, key) => {
+      if (albumList[key].albumId.id === parseInt(albumId)) {
         acc.push({
           fotoId: key,
           ...albumList[key],
@@ -92,9 +91,9 @@ app.get("/sort", async (req, res) => {
       return acc;
     }, []);
 
-    res.status(200).json(filteredAlbums);
+    res.status(200).json(filteredPhotos);
   } catch (error) {
-    res.status(500).json({ error: "Terjadi kesalahan saat memuat data album" });
+    res.status(500).json({ error: "Terjadi kesalahan saat memuat data foto" });
   }
 });
 
