@@ -33,7 +33,7 @@ app.post("/", async (req, res) => {
       deskripsi: deskripsi,
       tanggalUnggah: tanggalUnggah,
       userId: {
-        id: userId.id,
+        userId: userId.id,
         username: userId.username,
       },
     });
