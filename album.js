@@ -32,7 +32,10 @@ app.post("/", async (req, res) => {
       namaAlbum: namaAlbum,
       deskripsi: deskripsi,
       tanggalUnggah: tanggalUnggah,
-      userId: userId,
+      userId: {
+        id: userId.id,
+        username: userId.username,
+      },
     });
 
     res.status(201).json({
@@ -40,7 +43,10 @@ app.post("/", async (req, res) => {
       namaAlbum: namaAlbum,
       deskripsi: deskripsi,
       tanggalUnggah: tanggalUnggah,
-      userId: userId,
+      userId: {
+        id: userId.id,
+        username: userId.username,
+      },
     });
   } catch (error) {
     res.status(500).json({ error: "Terjadi kesalahan waktu menambahkan data users" });
