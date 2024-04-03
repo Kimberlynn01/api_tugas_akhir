@@ -30,8 +30,14 @@ app.post("/", async (req, res) => {
       deskripsiFoto: deskripsiFoto,
       tanggalUnggah: tanggalUnggah,
       lokasiFile: lokasiFile,
-      albumId: albumId,
-      userId: userId,
+      albumId: {
+        id: albumId.id,
+        namaAlbum: albumId.namaAlbum,
+      },
+      userId: {
+        id: userId.id,
+        username: userId.username,
+      },
     });
 
     res.status(201).json({
@@ -41,7 +47,10 @@ app.post("/", async (req, res) => {
       tanggalUnggah: tanggalUnggah,
       lokasiFile: lokasiFile,
       albumId: albumId,
-      userId: userId,
+      userId: {
+        id: userId.id,
+        username: userId.username,
+      },
     });
   } catch (error) {
     res.status(500).send({ error: "Terjadi kesalahan saat menambahkan data" });
