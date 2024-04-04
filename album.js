@@ -6,7 +6,7 @@ app.use(express.json());
 
 app.post("/", async (req, res) => {
   try {
-    const { namaAlbum, deskripsi, userId } = req.body;
+    const { namaAlbum, deskripsi, fotoAlbum, userId } = req.body;
 
     if (!userId) {
       return res.status(400).send("UserId is required!");
@@ -14,6 +14,8 @@ app.post("/", async (req, res) => {
       return res.status(400).send("Nama Album is required!");
     } else if (!deskripsi) {
       return res.status(400).send("Deskripsi is required!");
+    } else if (!fotoAlbum) {
+      return res.status(400).send("Foto Album is required!");
     }
 
     const albumRef = admin.database().ref("album");
@@ -31,6 +33,7 @@ app.post("/", async (req, res) => {
       albumId: nextId,
       namaAlbum: namaAlbum,
       deskripsi: deskripsi,
+      fotoAlbum: fotoAlbum,
       tanggalUnggah: tanggalUnggah,
       userId: {
         id: userId.id,
@@ -42,6 +45,7 @@ app.post("/", async (req, res) => {
       albumId: nextId,
       namaAlbum: namaAlbum,
       deskripsi: deskripsi,
+      fotoAlbum: fotoAlbum,
       tanggalUnggah: tanggalUnggah,
       userId: {
         id: userId.id,
