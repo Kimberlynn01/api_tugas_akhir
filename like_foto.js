@@ -57,3 +57,5 @@ app.get("/", async (req, res) => {
     res.status(500).json({ error: "Terjadi kesalahan saat memuat data Likedfoto" });
   }
 });
+
+module.exports = app;
