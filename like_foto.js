@@ -54,6 +54,6 @@ app.get("/", async (req, res) => {
 
     res.status(200).json(likedArray);
   } catch (error) {
-    res.status(500).json({ error: "Terjadi kesalahan saat memuat data like foto" });
+    res.status(500).json({ error: "Terjadi kesalahan saat memuat data Likedfoto" });
   }
 });
