@@ -30,6 +30,7 @@ app.post("/", async (req, res) => {
       deskripsiFoto: deskripsiFoto,
       tanggalUnggah: tanggalUnggah,
       lokasiFile: lokasiFile,
+      isLiked: false,
       albumId: {
         id: albumId.id,
         namaAlbum: albumId.namaAlbum,
@@ -47,6 +48,7 @@ app.post("/", async (req, res) => {
       tanggalUnggah: tanggalUnggah,
       lokasiFile: lokasiFile,
       albumId: albumId,
+      isLiked: false,
       userId: {
         id: userId.id,
         username: userId.username,
