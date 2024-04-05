@@ -73,10 +73,10 @@ app.delete("/:fotoId", async (req, res) => {
     const snapshot = await likedRef.once("value");
     const likedData = snapshot.val();
 
-    if (!likedData || likedData.userId !== userId) {
-      res.status(404).send("Like tidak ditemukan atau bukan milik pengguna");
-      return;
-    }
+    // if (!likedData || likedData.userId !== userId) {
+    //   res.status(404).send("Like tidak ditemukan atau bukan milik pengguna");
+    //   return;
+    // }
 
     await likedRef.remove();
 
