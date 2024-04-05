@@ -37,7 +37,9 @@ app.post("/", async (req, res) => {
       userId: userId,
       tanggalLike: tanggalLike,
     });
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({ error: "terjadi kesalahan saat mengirim like ke api" });
+  }
 });
 
 app.get("/", async (req, res) => {
