@@ -15,14 +15,12 @@ app.post("/", async (req, res) => {
     const likedRef = admin.database().ref("liked_foto");
 
     const snapshot = await likedRef.once("value");
-
     const likedList = snapshot.val();
 
     const nextId = Object.keys(likedList || {}).length + 1;
-
     const tanggalLike = new Date().toISOString();
 
-    newLikedRef = likedRef.child(nextId.toString);
+    newLikedRef = likedRef.child(nextId.toString());
 
     await newLikedRef.set({
       id: nextId,
