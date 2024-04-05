@@ -83,6 +83,17 @@ app.delete("/:fotoId", async (req, res) => {
 
     await likedRef.remove();
 
+    const fotoRef = admin.database().ref("foto").child(fotoId);
+
+    const fotoSnapshot = await fotoRef.once("value");
+    const fotoData = fotoSnapshot.val();
+
+    if (!fotoData) {
+      res.status(404).send({ error: "foto id tidak ada" });
+    }
+
+    await fotoRef.update({ isLiked: false });
+
     res.status(200).json({ message: "Unlike Berhasil" });
   } catch (error) {
     res.status(500).json({ error: "terjadi kesalahan saat menghapus like foto" });
