@@ -29,11 +29,19 @@ app.post("/", async (req, res) => {
       tanggalLike: tanggalLike,
     });
 
+    const fotoRef = admin.database().ref("foto").child(fotoId);
+    const fotoSnapshot = await fotoRef.once("value");
+    const fotoData = fotoSnapshot.val();
+
+    if (!fotoData) {
+      res.status(404).send({ error: "Data foto tidak ditemukan" });
+      return;
+    }
+
+    await fotoRef.update({ isLiked: true });
+
     res.status(201).json({
-      id: nextId,
-      fotoId: fotoId,
-      userId: userId,
-      tanggalLike: tanggalLike,
+      message: "Like berhasil terkirim dan data disimpan di liked_foto",
     });
   } catch (error) {
     res.status(500).json({ error: "terjadi kesalahan saat mengirim like ke api" });
