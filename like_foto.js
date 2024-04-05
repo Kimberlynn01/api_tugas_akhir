@@ -8,7 +8,7 @@ app.post("/", async (req, res) => {
   try {
     const { fotoId, userId } = req.body;
 
-    if (!fotoId || userId) {
+    if (!fotoId || !userId) {
       res.status(400).send("fotoId / userId invalid");
     }
 
