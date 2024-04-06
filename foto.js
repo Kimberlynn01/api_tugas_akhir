@@ -30,7 +30,7 @@ app.post("/", async (req, res) => {
       deskripsiFoto: deskripsiFoto,
       tanggalUnggah: tanggalUnggah,
       lokasiFile: lokasiFile,
-      isLiked: false,
+      isLiked: 0,
       albumId: {
         id: albumId.id,
         namaAlbum: albumId.namaAlbum,

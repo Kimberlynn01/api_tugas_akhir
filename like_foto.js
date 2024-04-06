@@ -38,7 +38,7 @@ app.post("/", async (req, res) => {
       return;
     }
 
-    await fotoRef.update({ isLiked: true });
+    await fotoRef.update({ isLiked: (fotoData.isLiked || 0) + 1 });
 
     res.status(201).json({
       message: "Like berhasil terkirim dan data disimpan di liked_foto",
@@ -92,7 +92,7 @@ app.delete("/:fotoId", async (req, res) => {
       res.status(404).send({ error: "foto id tidak ada" });
     }
 
-    await fotoRef.update({ isLiked: false });
+    await fotoRef.update({ isLiked: (fotoData.isLiked || 0) - 1 });
 
     res.status(200).json({ message: "Unlike Berhasil" });
   } catch (error) {
