@@ -47,7 +47,10 @@ app.post("/", async (req, res) => {
       deskripsiFoto: deskripsiFoto,
       tanggalUnggah: tanggalUnggah,
       lokasiFile: lokasiFile,
-      albumId: albumId,
+      albumId: {
+        id: albumId.id,
+        namaAlbum: albumId.namaAlbum,
+      },
       isLiked: false,
       userId: {
         id: userId.id,

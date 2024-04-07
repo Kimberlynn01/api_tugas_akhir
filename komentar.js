@@ -36,5 +36,17 @@ app.post("/", async (req, res) => {
     tanggalKomentar: tanggalKomentar,
   });
 
-  // res.
+  res.status(201).json({
+    id: nextId,
+    fotoId: {
+      id: fotoId.id,
+      judulFoto: fotoId.judulFoto,
+    },
+    userId: {
+      id: userId.id,
+      username: userId.username,
+    },
+    isiKomentar: isiKomentar,
+    tanggalKomentar: tanggalKomentar,
+  });
 });
