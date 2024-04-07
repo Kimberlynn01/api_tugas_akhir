@@ -4,6 +4,8 @@ const userRoute = require("./user");
 const albumRoute = require("./album");
 const fotoRouter = require("./foto");
 const likeFotoRouter = require("./like_foto");
+const komentar = require("./komentar");
+
 // router for user
 router.use("/user", userRoute);
 
@@ -16,4 +18,6 @@ router.use("/foto", fotoRouter);
 // router for like foto
 router.use("/liked", likeFotoRouter);
 
+// router fot komentar
+router.use("/komentar", komentar);
 module.exports = router;
