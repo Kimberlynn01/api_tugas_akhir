@@ -106,6 +106,7 @@ app.delete("/:id", async (req, res) => {
       updatedKomentarList.map(async (komentar, index) => {
         const komentarId = komentar.id;
         const updatedKomentarRef = admin.database().ref("komentar").child(komentarId.toString());
+
         await updatedKomentarRef.set({ ...komentar, id: index + 1 });
       })
     );
