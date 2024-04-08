@@ -76,9 +76,8 @@ app.get("/", async (req, res) => {
 app.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const { userId } = req.body;
 
-    if (!id || !userId) {
+    if (!id) {
       res.status(400).send("komentarId / userId invalid");
       return;
     }
