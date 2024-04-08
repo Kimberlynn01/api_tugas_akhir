@@ -88,14 +88,33 @@ app.delete("/:id", async (req, res) => {
     const snapshot = await komentarRef.once("value");
     const komentarData = snapshot.val();
 
+    if (!komentarData) {
+      res.status(404).json({ error: "Komentar tidak ditemukan" });
+      return;
+    }
+
     await komentarRef.remove();
+
+    const allKomentarSnapshot = await admin.database().ref("komentar").once("value");
+    const allKomentarList = allKomentarSnapshot.val();
+
+    const updatedKomentarList = Object.keys(allKomentarList || {}).map((key) => ({
+      id: Number(key),
+      ...allKomentarList[key],
+    }));
+
+    await Promise.all(
+      updatedKomentarList.map(async (komentar, index) => {
+        const komentarId = komentar.id;
+        const updatedKomentarRef = admin.database().ref("komentar").child(komentarId.toString());
+        await updatedKomentarRef.set({ ...komentar, id: index + 1 });
+      })
+    );
 
     res.status(200).json({ message: "Berhasil menghapus komentar" });
   } catch (error) {
     res.status(500).json({ error: "terjadi kesalahan saat ingin menghapus data komentar" });
   }
 });
-
-
 
 module.exports = app;
