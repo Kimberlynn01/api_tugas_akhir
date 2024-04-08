@@ -17,7 +17,7 @@ app.post("/", async (req, res) => {
     const snapshot = await komentarRef.once("value");
     const komentarList = snapshot.val();
 
-    const nextId = Object.keys(komentarList || {});
+    const nextId = Object.keys(komentarList || {}).length + 1;
 
     const tanggalKomentar = new Date().toISOString();
 
