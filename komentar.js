@@ -73,4 +73,29 @@ app.get("/", async (req, res) => {
   }
 });
 
+app.delete("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { userId } = req.body;
+
+    if (!id || !userId) {
+      res.status(400).send("komentarId / userId invalid");
+      return;
+    }
+
+    const komentarRef = admin.database().ref("komentar").child(id);
+
+    const snapshot = await komentarRef.once("value");
+    const komentarData = snapshot.val();
+
+    await komentarRef.remove();
+
+    res.status(200).json({ message: "Berhasil menghapus komentar" });
+  } catch (error) {
+    res.status(500).json({ error: "terjadi kesalahan saat ingin menghapus data komentar" });
+  }
+});
+
+
+
 module.exports = app;

@@ -72,7 +72,7 @@ app.delete("/:fotoId", async (req, res) => {
     const { userId } = req.body;
 
     if (!fotoId || !userId) {
-      res.status(400).send("fotoId / invalid");
+      res.status(400).send("fotoId / userId invalid");
       return;
     }
 
