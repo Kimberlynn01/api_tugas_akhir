@@ -38,7 +38,7 @@ app.post("/", async (req, res) => {
     });
 
     res.status(201).json({
-      id: nextId,
+      id: id,
       fotoId: {
         id: fotoId.id,
         judulFoto: fotoId.judulFoto,
