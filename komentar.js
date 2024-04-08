@@ -17,14 +17,13 @@ app.post("/", async (req, res) => {
     const snapshot = await komentarRef.once("value");
     const komentarList = snapshot.val();
 
-    const nextId = Object.keys(komentarList || {}).length + 1;
+    // Generate unique ID for the comment using timestamp and user ID
+    const uniqueId = `${Date.now()}_${userId.id}`;
 
-    const tanggalKomentar = new Date().toISOString();
-
-    const newKomentarRef = komentarRef.child(nextId.toString());
+    const newKomentarRef = komentarRef.child(uniqueId);
 
     await newKomentarRef.set({
-      id: nextId,
+      id: uniqueId,
       fotoId: {
         id: fotoId.id,
         judulFoto: fotoId.judulFoto,
@@ -34,11 +33,11 @@ app.post("/", async (req, res) => {
         username: userId.username,
       },
       isiKomentar: isiKomentar,
-      tanggalKomentar: tanggalKomentar,
+      tanggalKomentar: new Date().toISOString(),
     });
 
     res.status(201).json({
-      id: nextId,
+      id: uniqueId,
       fotoId: {
         id: fotoId.id,
         judulFoto: fotoId.judulFoto,
@@ -48,7 +47,7 @@ app.post("/", async (req, res) => {
         username: userId.username,
       },
       isiKomentar: isiKomentar,
-      tanggalKomentar: tanggalKomentar,
+      tanggalKomentar: new Date().toISOString(),
     });
   } catch (error) {
     res.status(500).send({ error: "terjadi kesalahan saat ingin mengirimkan data komentar" });
