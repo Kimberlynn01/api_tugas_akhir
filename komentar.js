@@ -4,6 +4,8 @@ const admin = require("firebase-admin");
 
 app.use(express.json());
 
+let nextCommentId = 1; // Variabel untuk menyimpan ID komentar berikutnya
+
 app.post("/", async (req, res) => {
   try {
     const { fotoId, userId, isiKomentar } = req.body;
@@ -17,10 +19,10 @@ app.post("/", async (req, res) => {
     const snapshot = await komentarRef.once("value");
     const komentarList = snapshot.val();
 
-    // Generate unique ID for the comment using timestamp and user ID
-    const uniqueId = `${Date.now()}_${userId.id}`;
+    // Menggunakan ID komentar berikutnya sebagai ID unik
+    const uniqueId = nextCommentId;
 
-    const newKomentarRef = komentarRef.child(uniqueId);
+    const newKomentarRef = komentarRef.child(uniqueId.toString());
 
     await newKomentarRef.set({
       id: uniqueId,
@@ -35,6 +37,9 @@ app.post("/", async (req, res) => {
       isiKomentar: isiKomentar,
       tanggalKomentar: new Date().toISOString(),
     });
+
+    // Menambahkan 1 ke ID komentar berikutnya untuk komentar selanjutnya
+    nextCommentId++;
 
     res.status(201).json({
       id: uniqueId,
