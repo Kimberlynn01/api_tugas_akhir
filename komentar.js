@@ -21,7 +21,7 @@ app.post("/", async (req, res) => {
 
     const tanggalKomentar = new Date().toISOString();
 
-    const newKomentarRef = komentarRef.child(nextId.toString());
+    const newKomentarRef = komentarRef.child();
 
     await newKomentarRef.set({
       fotoId: {
