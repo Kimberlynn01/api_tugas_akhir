@@ -17,11 +17,11 @@ app.post("/", async (req, res) => {
     const snapshot = await komentarRef.once("value");
     const komentarList = snapshot.val();
 
-    const nextId = Object.keys(komentarList || {}).length + 1;
+    // const nextId = Object.keys(komentarList || {}).length + 1;
 
     const tanggalKomentar = new Date().toISOString();
 
-    const newKomentarRef = komentarRef.child(nextId.toString());
+    const newKomentarRef = komentarRef.push();
 
     await newKomentarRef.set({
       fotoId: {
