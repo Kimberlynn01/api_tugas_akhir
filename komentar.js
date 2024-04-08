@@ -4,8 +4,6 @@ const admin = require("firebase-admin");
 
 app.use(express.json());
 
-let nextCommentId = 1; // Variabel untuk menyimpan ID komentar berikutnya
-
 app.post("/", async (req, res) => {
   try {
     const { fotoId, userId, isiKomentar } = req.body;
@@ -19,13 +17,13 @@ app.post("/", async (req, res) => {
     const snapshot = await komentarRef.once("value");
     const komentarList = snapshot.val();
 
-    // Menggunakan ID komentar berikutnya sebagai ID unik
-    const uniqueId = nextCommentId;
+    const nextId = Object.keys(komentarList || {}).length + 1;
 
-    const newKomentarRef = komentarRef.child(uniqueId.toString());
+    const tanggalKomentar = new Date().toISOString();
+
+    const newKomentarRef = komentarRef.child(nextId.toString());
 
     await newKomentarRef.set({
-      id: uniqueId,
       fotoId: {
         id: fotoId.id,
         judulFoto: fotoId.judulFoto,
@@ -35,14 +33,10 @@ app.post("/", async (req, res) => {
         username: userId.username,
       },
       isiKomentar: isiKomentar,
-      tanggalKomentar: new Date().toISOString(),
+      tanggalKomentar: tanggalKomentar,
     });
 
-    // Menambahkan 1 ke ID komentar berikutnya untuk komentar selanjutnya
-    nextCommentId++;
-
     res.status(201).json({
-      id: uniqueId,
       fotoId: {
         id: fotoId.id,
         judulFoto: fotoId.judulFoto,
@@ -52,7 +46,7 @@ app.post("/", async (req, res) => {
         username: userId.username,
       },
       isiKomentar: isiKomentar,
-      tanggalKomentar: new Date().toISOString(),
+      tanggalKomentar: tanggalKomentar,
     });
   } catch (error) {
     res.status(500).send({ error: "terjadi kesalahan saat ingin mengirimkan data komentar" });
