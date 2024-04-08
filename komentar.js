@@ -24,7 +24,7 @@ app.post("/", async (req, res) => {
     const newKomentarRef = komentarRef.child(nextId.toString());
 
     await newKomentarRef.set({
-      id: nextId,
+      id: id,
       fotoId: {
         id: fotoId.id,
         judulFoto: fotoId.judulFoto,
