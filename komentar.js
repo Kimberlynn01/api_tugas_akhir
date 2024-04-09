@@ -51,30 +51,31 @@ app.post("/", async (req, res) => {
   }
 });
 
-app.get("/", async (req, res) => {
+app.get("/:fotoId", async (req, res) => {
   try {
-    const { fotoId } = req.query;
+    const fotoId = req.params.fotoId;
 
     if (!fotoId) {
-      res.status(400).send({ message: "Parameter tidak lengkap!" });
-      return;
+      return res.status(400).json({ error: "fotoId is required!" });
     }
 
     const komentarRef = admin.database().ref("komentar");
     const snapshot = await komentarRef.once("value");
-
     const komentarList = snapshot.val();
 
-    const filteredKomentarArray = Object.keys(komentarList || {})
-      .map((key) => ({
-        id: key,
-        ...komentarList[key],
-      }))
-      .filter((komentar) => komentar.fotoId.id === fotoId);
+    const filteredPhotos = Object.keys(komentarList || {}).reduce((acc, key) => {
+      if (komentarList[key].fotoId.id === parseInt(fotoId)) {
+        acc.push({
+          id: key,
+          ...komentarList[key],
+        });
+      }
+      return acc;
+    }, []);
 
-    res.status(200).json(filteredKomentarArray);
+    res.status(200).json(filteredPhotos);
   } catch (error) {
-    res.status(500).json({ error: "Terjadi kesalahan saat ingin memuat data komentar" });
+    res.status(500).json({ error: "Terjadi kesalahan saat memuat data foto" });
   }
 });
 

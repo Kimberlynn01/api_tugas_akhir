@@ -73,6 +73,7 @@ app.get("/", async (req, res) => {
     res.status(500).json({ error: "Terjadi kesalahan saat memuat data album" });
   }
 });
+
 app.get("/:albumId/photos", async (req, res) => {
   try {
     const albumId = req.params.albumId;
