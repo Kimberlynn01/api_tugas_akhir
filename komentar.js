@@ -17,8 +17,6 @@ app.post("/", async (req, res) => {
     const snapshot = await komentarRef.once("value");
     const komentarList = snapshot.val();
 
-    // const nextId = Object.keys(komentarList || {}).length + 1;
-
     const tanggalKomentar = new Date().toISOString();
 
     const newKomentarRef = komentarRef.push();
@@ -55,17 +53,26 @@ app.post("/", async (req, res) => {
 
 app.get("/", async (req, res) => {
   try {
+    const { fotoId } = req.query;
+
+    if (!fotoId) {
+      res.status(400).send({ message: "Parameter tidak lengkap!" });
+      return;
+    }
+
     const komentarRef = admin.database().ref("komentar");
     const snapshot = await komentarRef.once("value");
 
     const komentarList = snapshot.val();
 
-    const komentarArray = Object.keys(komentarList || {}).map((key) => ({
-      id: key,
-      ...komentarList[key],
-    }));
+    const filteredKomentarArray = Object.keys(komentarList || {})
+      .map((key) => ({
+        id: key,
+        ...komentarList[key],
+      }))
+      .filter((komentar) => komentar.fotoId.id === fotoId);
 
-    res.status(200).json(komentarArray);
+    res.status(200).json(filteredKomentarArray);
   } catch (error) {
     res.status(500).json({ error: "Terjadi kesalahan saat ingin memuat data komentar" });
   }
