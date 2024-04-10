@@ -102,4 +102,23 @@ app.get("/:albumId/photos", async (req, res) => {
   }
 });
 
+app.delete("/:albumId", async (req, res) => {
+  try {
+    const { albumId } = req.params;
+
+    const albumRef = admin.database().ref("foto").child(albumId);
+
+    const snapshot = await albumRef.once("value");
+    if (!snapshot.exists()) {
+      return res.status(404).send({ error: "Album not found" });
+    }
+
+    await albumRef.remove();
+
+    res.status(200).send({ message: "Album berhasil di hapus" });
+  } catch (error) {
+    res.status(500).send({ error: "Terjadi kesalahan saat menghapus album" });
+  }
+});
+
 module.exports = app;
