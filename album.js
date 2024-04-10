@@ -106,7 +106,7 @@ app.delete("/:albumId", async (req, res) => {
   try {
     const { albumId } = req.params;
 
-    const albumRef = admin.database().ref("foto").child(albumId);
+    const albumRef = admin.database().ref("album").child(albumId);
 
     const snapshot = await albumRef.once("value");
     if (!snapshot.exists()) {
