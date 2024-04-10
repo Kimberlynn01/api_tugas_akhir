@@ -93,9 +93,9 @@ app.delete("/:fotoId", async (req, res) => {
 
     await fotoRef.remove();
 
-    res.status(200).send({ message: "Foto deleted successfully" });
+    res.status(200).send({ message: "Foto berhasil di hapus" });
   } catch (error) {
-    res.status(500).send({ error: "Failed to delete foto" });
+    res.status(500).send({ error: "Terjadi kesalahan saat menghapus foto" });
   }
 });
 
