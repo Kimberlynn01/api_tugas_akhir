@@ -80,4 +80,23 @@ app.get("/", async (req, res) => {
   }
 });
 
+app.delete("/:fotoId", async (req, res) => {
+  try {
+    const { fotoId } = req.params;
+
+    const fotoRef = admin.database().ref("foto").child(fotoId);
+
+    const snapshot = await fotoRef.once("value");
+    if (!snapshot.exists()) {
+      return res.status(404).send({ error: "Foto not found" });
+    }
+
+    await fotoRef.remove();
+
+    res.status(200).send({ message: "Foto deleted successfully" });
+  } catch (error) {
+    res.status(500).send({ error: "Failed to delete foto" });
+  }
+});
+
 module.exports = app;
